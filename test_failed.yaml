@@ -1,0 +1,30 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+  - name: "prometheus version"
+    command: "prometheus"
+    args: ["--version"]
+    expectedOutput: [".*2.40.6.*"]
+
+fileExistenceTests:
+- name: 'prometheus.yml'
+  path: '/etc/prometheus/prometheus.yml'
+  shouldExist: true
+  permissions: '-rwxr--r--'
+  uid: 65534
+  gid: 65534
+- name: '/bin/prometheus'
+  path: '/bin/prometheus'
+  shouldExist: true
+  permissions: '-rwxr-xr-x'
+  uid: 1
+  gid: 1
+
+
+# Test metadata
+metadataTest:
+  exposedPorts: ["9091"]
+  volumes: [ "/prometheus" ]
+  entrypoint: [ "/bin/prometheus" ]
+  workdir: "/prometheus"
+  user: "nobody"
